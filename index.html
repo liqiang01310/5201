@@ -121,7 +121,7 @@ body{
 <div class="big-text" id="loveText">I LOVE YOU</div>
 
 <!-- 背景音乐 -->
-<audio id="bgMusic" loop muted>
+<audio id="bgMusic" loop>
   <source src="background.mp3" type="audio/mpeg">
   您的浏览器不支持音频播放。
 </audio>
@@ -133,7 +133,7 @@ let loveText = document.getElementById("loveText");
 let heart = document.querySelector(".heart");
 let bgMusic = document.getElementById("bgMusic");
 
-/* 文字依次出现 */
+// 文字依次出现
 lines.forEach((line,i)=>{
     setTimeout(()=>{
         line.style.opacity=1;
@@ -141,24 +141,27 @@ lines.forEach((line,i)=>{
     },1500*i);
 });
 
-/* 显示点击提示 */
+// 显示点击提示
 setTimeout(()=>{
     tip.style.transition="opacity 2s";
     tip.style.opacity=1;
 },1500*lines.length+500);
 
-/* 微信自动播放支持 */
+// 微信/手机浏览器兼容自动播放
 function wxAutoPlay() {
-    bgMusic.play().catch(()=>{});
+    bgMusic.play().catch(()=>{}); // 尝试自动播放
     document.addEventListener("WeixinJSBridgeReady", function() {
-        bgMusic.play();
+        bgMusic.play(); // 微信专用
     }, false);
 }
 wxAutoPlay();
 
-/* 点击后大爱心炸开 */
+// 点击屏幕触发音乐和心形爆炸
 let exploded = false;
 document.addEventListener("click",function(){
+    // 首次点击触发音乐播放
+    bgMusic.play().catch(()=>{});
+
     if(exploded) return;
     if(tip.style.opacity==1){
         tip.style.opacity=0;
