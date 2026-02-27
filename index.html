@@ -130,11 +130,18 @@ body{
 <div class="tip" id="tip">点击屏幕有惊喜 💖</div>
 <div class="big-text" id="loveText">I LOVE YOU</div>
 
+<!-- 背景音乐 -->
+<audio id="bgMusic" loop muted>
+  <source src="background.mp3" type="audio/mpeg">
+  您的浏览器不支持音频播放。
+</audio>
+
 <script>
 let lines = document.querySelectorAll(".line");
 let tip = document.getElementById("tip");
 let loveText = document.getElementById("loveText");
 let heart = document.querySelector(".heart");
+let bgMusic = document.getElementById("bgMusic");
 
 /* 文字依次出现 */
 lines.forEach((line,i)=>{
@@ -149,6 +156,15 @@ setTimeout(()=>{
     tip.style.transition="opacity 2s";
     tip.style.opacity=1;
 },1500*lines.length+500);
+
+/* 微信自动播放支持 */
+function wxAutoPlay() {
+    bgMusic.play().catch(()=>{});
+    document.addEventListener("WeixinJSBridgeReady", function() {
+        bgMusic.play();
+    }, false);
+}
+wxAutoPlay();
 
 /* 点击后大爱心炸开 */
 let exploded = false;
@@ -167,7 +183,6 @@ document.addEventListener("click",function(){
         heart.remove();
 
         // 生成心形粒子
-        let particles = [];
         for(let i=0;i<200;i++){
             let p = document.createElement("div");
             p.className="particle";
@@ -202,5 +217,4 @@ document.addEventListener("click",function(){
 </script>
 
 </body>
-
 </html>
